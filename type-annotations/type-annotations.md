@@ -44,3 +44,38 @@ let now: Date = new Date();
 ![type_annotation](../img/type-annotation.png)
 
 ---
+
+배열과 타입 어노테이션
+
+```ts
+// Array
+let colors: string[] = ['red', 'green', 'blue'];
+let myNumbers: number[] = [1, 2, 3];
+let truths: boolean[] = [true, true, false];
+```
+
+- 위와 같이 콜론(:) 타입(string, number, boolean, etc...)[]의 형식으로 작성한다
+
+클래스와 타입 어노테이션
+
+```ts
+// Classes
+class Car {}
+
+let car: Car = new Car();
+```
+
+- 변수명과 클래스명이 대문자, 소문자 구분을 제외하면 똑같기 때문에 헷갈릴 수 있다
+- 이 문제는 클래스의 첫 문자를 대문자로 사용하는 컨벤션으로 해결한다
+
+오브젝트 리터럴과 타입 어노테이션
+
+```ts
+// Object literal
+let point: { x: number; y: number } = {
+  x: 10,
+  y: 20,
+};
+```
+
+- { key1: type of key1; key2: type of key2; etc... }의 형식으로 작성한다
