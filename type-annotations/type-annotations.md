@@ -114,3 +114,47 @@ let nothing = undefined;
 ![type_annotation_and_type_inference](../img/annotation_and_inference.png)
 
 - 위와 같이 상황에 따라 대처할 수 있다
+
+---
+
+any타입
+
+```ts
+// When to use annotations
+// 1) Function that returns the 'any' type
+const json = '{"x": 10, "y": 20}';
+const coordinates = JSON.parse(json);
+```
+
+- 위 코드와 같이 json형식의 데이터를 해석하는 JSON.parse함수로 데이터를 변환해보자
+- 그런 다음 coordinates 변수 위에 마우스를 올려놓아 TS가 어떻게 coordinates를 추론하는지 확인해보자
+
+![json_parse_type_any](../img/json_parse_any.png)
+
+- 위에서 배웠던 대로 object literal이라면 {x: number; y: number;} 형식으로 추론되어야 할 것 같지만 any타입으로 추론되고 있음을 확인할 수 있다
+- 왜 이런 현상이 일어나는 것일까
+
+![json_parse_different_type](../img/json_parse_differnt_type.png)
+
+- 위 그림과 같이 JSON.parse함수는 매우 다양한 타입의 값을 해석해 반환할 수 있다
+- 그런데 해석대상으로 들어오는 파라미터는 항상 문자열 타입이다
+- 이런 규칙성이 없는 상황에서는 타입스크립트가 JSON.parse를 호출한 결과가 정확히 무엇인지를 예측할 수 없다
+- 이렇게 값의 타입을 정확히 예측할 수 없는 상황에 대해 타입스크립트는 any타입을 사용해 해결한다
+
+![any_type](../img/any_type.png)
+
+- 위처럼 예측할 수 없는 상황에 대해 에러를 발생시키지 않기 위해서 any를 사용할 수 있다
+- 그러나 애플리케이션 전반에 any 타입을 사용하면 에러가 있을 때에도 타입스크립트 컴파일러가 에러를 잡아낼 수 없게 된다
+- 따라서 any는 정말 불가피한 상황이 아니라면 사용하지 않는 것이 좋다
+- 예를 들어 다음과 같은 코드를 보면 그 문제점을 알 수 있다
+
+```ts
+// When to use annotations
+// 1) Function that returns the 'any' type
+const json = '{"x": 10, "y": 20}';
+const coordinates = JSON.parse(json);
+coordinates.djfapdjfipsajfdipsajdpfijsa; // Not occured error
+```
+
+- 실제로는 없는 프로퍼티명(djfapdjfipsajfdipsajdpfijsa)을 사용하고 있음에도 에러를 발생시키지 않는다
+- 이처럼 any타입이 많아지면 애플리케이션 전반에 예측할 수 없는 부분이 늘어난다
