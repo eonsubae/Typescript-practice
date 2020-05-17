@@ -79,3 +79,16 @@ let point: { x: number; y: number } = {
 ```
 
 - { key1: type of key1; key2: type of key2; etc... }의 형식으로 작성한다
+
+함수와 타입 어노테이션
+
+```ts
+// Function
+const logNumber: (i: number) => void = (i: number) => {
+  console.log(i);
+};
+```
+
+- 함수명 콜론(:) (파라미터: 타입) => 반환 타입 형식으로 사용한다
+
+---
