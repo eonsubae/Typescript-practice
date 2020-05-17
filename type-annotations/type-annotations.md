@@ -190,3 +190,33 @@ words.forEach((word) => {
   if (word === 'green') foundWord = true;
 });
 ```
+
+---
+
+한 변수가 두 개의 타입의 값을 가진다면?
+
+- 타입 인퍼런스만으로는 변수의 변화에 제대로 대응할 수 없다
+- 예를 들어 다음과 같은 코드를 보자
+
+![cannot_infer_correctly](../img/can_not_infer_correctly.png)
+
+- 초기에 numberAboveZero는 0을 넘는 값이 없음으로 선언하기 위해 boolean값을 가지고 있다
+- 이후 0이 넘는 숫자가 있으면 해당 값을 대입한다
+- 즉, numberAboveZero는 boolean타입이거나 number타입이다
+- 하지만 초기화와 동시에 추론이 결정되는 인퍼런스만으로는 이 상황에 제대로 대응할 수 없다
+
+타입 어노테이션으로 해결하기
+
+```ts
+// 3) Variable whose type cannot be inferred correctly
+let numbers = [-10, -1, 12];
+let numberAboveZero: boolean | number = false;
+
+numbers.forEach((number) => {
+  if (number > 0) {
+    numberAboveZero = number;
+  }
+});
+```
+
+- 변수명: 타입1 | 타입2 의 형식으로 |(OR)을 사용해 여러 타입을 지정하는 것으로 해결할 수 있다
