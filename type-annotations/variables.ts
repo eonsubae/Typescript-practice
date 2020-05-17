@@ -35,3 +35,12 @@ const logNumber: (i: number) => void = (i: number) => {
 const json = '{"x": 10, "y": 20}';
 const coordinates: { x: number; y: number } = JSON.parse(json);
 // coordinates.djfapdjfipsajfdipsajdpfijsa;
+
+// 2) When we declare a variable on one line
+// and initialize it later
+let words = ['red', 'green', 'blue'];
+let foundWord: boolean;
+
+words.forEach((word) => {
+  if (word === 'green') foundWord = true;
+});

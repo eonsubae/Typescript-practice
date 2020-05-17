@@ -163,3 +163,30 @@ coordinates.djfapdjfipsajfdipsajdpfijsa; // Not occured error
 ![solve_any](../img/sovle_any_using_annotation.png)
 
 - 앞서 Object literal에 사용했던 방식대로 어노테이션을 사용하면 해결할 수 있다
+
+---
+
+변수를 선언만 하고 초기값을 지정하지 않는 경우
+
+```ts
+// 2) When we declare a variable on one line
+// and initialize it later
+let words = ['red', 'green', 'blue'];
+let foundWord;
+
+words.forEach((word) => {
+  if (word === 'green') foundWord = true;
+});
+```
+
+- 위 코드와 같이 특정 변수의 값을 초기화하지 않고 분기문에 따라 지정하려고 하는 상황이 있을 수 있다
+- 이 때에도 어노테이션을 사용하면 예측하지 못한 값이 변수에 대입되었을 때 타입스크립트가 에러를 발생시켜준다
+
+```ts
+let words = ['red', 'green', 'blue'];
+let foundWord: boolean; // annotation
+
+words.forEach((word) => {
+  if (word === 'green') foundWord = true;
+});
+```
