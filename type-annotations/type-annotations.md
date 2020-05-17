@@ -92,3 +92,25 @@ const logNumber: (i: number) => void = (i: number) => {
 - 함수명 콜론(:) (파라미터: 타입) => 반환 타입 형식으로 사용한다
 
 ---
+
+타입 어노테이션이 사라지면 코드는 작동하지 않게 될까?
+
+```ts
+let apples = 5;
+let speed = 'fast';
+let hasName = true;
+let nothingMuch = null;
+let nothing = undefined;
+```
+
+- 위 코드처럼 타입 어노테이션을 지워도 에러는 발생하지 않는다
+- 또한 각각의 변수 위에 마우스를 올려놓아보면 각 변수의 타입도 초기값에 따라 잘 인식되고 있음을 알 수 있다
+- 이렇게 초기값의 선언을 통해 타입스크립트가 각 변수의 타입이 추측하는 것이 type inference다
+
+타입 인퍼런스(Type inference)
+![type_inference](../img/type-inference.png)
+
+그렇다면 언제 타입 어노테이션을 사용하고 언제 타입 인퍼런스를 사용하면 될까
+![type_annotation_and_type_inference](../img/annotation_and_inference.png)
+
+- 위와 같이 상황에 따라 대처할 수 있다
