@@ -158,3 +158,8 @@ coordinates.djfapdjfipsajfdipsajdpfijsa; // Not occured error
 
 - 실제로는 없는 프로퍼티명(djfapdjfipsajfdipsajdpfijsa)을 사용하고 있음에도 에러를 발생시키지 않는다
 - 이처럼 any타입이 많아지면 애플리케이션 전반에 예측할 수 없는 부분이 늘어난다
+
+타입 어노테이션을 사용해 위 문제를 해결하기
+![solve_any](../img/sovle_any_using_annotation.png)
+
+- 앞서 Object literal에 사용했던 방식대로 어노테이션을 사용하면 해결할 수 있다
