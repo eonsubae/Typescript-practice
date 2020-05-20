@@ -38,3 +38,21 @@ const subtract = (a: number, b: number) => {
 
 - 위 사례처럼 어노테이션을 적용하지 않은 경우 타입스크립트가 에러를 발생시키지 않는 경우가 있다
 - 이처럼 함수에 어노테이션을 사용하면 실수할 확률이 높아지므로 함수에는 인퍼런스를 사용하지 않는 것이 좋다
+
+---
+
+named function과 anonymous function에 타입 어노테이션을 사용하는 방법
+
+```ts
+// named function
+function divide(a: number, b: number) {
+  return a / b;
+}
+
+// anonymous function
+const multiply = (a: number, b: number) => {
+  return a * b;
+};
+```
+
+---
