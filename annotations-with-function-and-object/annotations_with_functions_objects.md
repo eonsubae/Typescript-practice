@@ -159,3 +159,34 @@ const logWeather = ({ date, weather }: { date: Date; weather: string }) => {
 logWeather(todaysWeather);
 ```
 * 각 프로퍼티를 호출하기 위해 반복적으로 forecast를 사용하던 코드들이 제거됐다
+
+---
+
+오브젝트 리터럴과 디스트럭쳐링 예시2
+```ts
+const profile = {
+  name: 'alex',
+  age: 20,
+  coords: {
+    lat: 0,
+    lng: 15
+  },
+  setAge(age: number) {
+    this.age = age;
+  }
+};
+
+const { age } = profile;
+```
+* 위 코드처럼 특정 오브젝트 리터럴을 초기화하고 디스트럭쳐링으로 특정 프로퍼티 값을 가져올 수 있다
+* 그런데 디스트럭쳐링된 age라는 변수는 아직 타입에 대한 힌트가 없는 상태다
+
+```ts
+// (...)
+
+const { age }: { age: number } = profile;
+const { 
+  coords: { lat, lng },
+}: { coords: { lat: number; lng: number } } = profile;
+```
+* 위 처럼 { 변수명: 타입 }의 형식으로 애노테이션을 적용할 수 있다
