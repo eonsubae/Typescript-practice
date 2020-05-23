@@ -125,3 +125,37 @@ const throwError = (message: string): string /* never(x) */ => {
   return message;
 };
 ```
+
+---
+
+디스트럭쳐링 활용하기
+```ts
+const todaysWeather = {
+  date: new Date(),
+  weather: 'sunny',
+};
+
+const logWeather = (forecast: { date: Date; weather: string }) => {
+  console.log(forecast.date);
+  console.log(forecast.weather);
+};
+
+logWeather(todaysWeather);
+```
+* 오브젝트 리터럴도 위 코드의 { date: Date; weather: string } 부분처럼 어노테이션을 사용할 수 있다
+* 위와 같은 처리도 괜찮지만 보다 간결하게 위 작업을 처리하기 위해 ES6의 디스트럭쳐링을 사용할 수도 있다
+
+```ts
+const todaysWeather = {
+  date: new Date(),
+  weather: 'sunny',
+};
+
+const logWeather = ({ date, weather }: { date: Date; weather: string }) => {
+  console.log(date);
+  console.log(weather);
+};
+
+logWeather(todaysWeather);
+```
+* 각 프로퍼티를 호출하기 위해 반복적으로 forecast를 사용하던 코드들이 제거됐다

@@ -21,10 +21,22 @@ const logger = (message: string): void => {
   // return "qcwpejwipqcw"; /* error */
 };
 
-const throwError = (message: string): never => {
+const throwError = (message: string): void => {
   if (!message) {
     throw new Error(message);
   }
 
-  return message;
+  // return message;
 };
+
+const todaysWeather = {
+  date: new Date(),
+  weather: 'sunny',
+};
+
+const logWeather = ({ date, weather }: { date: Date; weather: string }) => {
+  console.log(date);
+  console.log(weather);
+};
+
+logWeather(todaysWeather);
