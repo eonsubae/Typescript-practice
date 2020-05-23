@@ -38,3 +38,22 @@ carMakers.map((car: string): string => {
 ```
 * 위와 같이 변수 추출, 배열에 새로운 값 추가, map, foreach등 합성함수를 사용할 때 실수를 방지해준다
 
+플렉서블 타입 제공
+* Typed array는 여러 타입의 값이 있을 때 OR(|)방식으로 배열의 요소들을 추론해준다
+
+```ts
+// Flexible types
+const importantDates = [new Date(), '2030-10-10'];
+```
+
+![flexible_type_in_typed_array](../img/flexible_type_in_typed_array.png)
+
+초기화에는 특정 타입의 값은 넣지 않았지만 넣을 수도 있는 경우
+* 여러번 적어두었지만 타입 애노테이션을 적극적으로 활용하는 것이 예측가능성을 올려주고 실수를 줄여준다
+
+```ts
+// Flexible types
+const importantDates: (Date | string)[] = [new Date()];
+importantDates.push('2030-10-10');
+```
+* 만약 위와 같은 코드에서 인퍼런스만을 사용했다면 string 타입의 값은 push될 수 없을 것이다
