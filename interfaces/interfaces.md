@@ -125,3 +125,6 @@ printSummary(drink);
 
 - Reportable은 특정 객체의 요약 문자열을 반환하는 함수다
 - 그 객체가 vehicle이든 drink이든 summary라는 함수만 정의에 맞게 구현하고 있다면 재활용할 수 있다
+
+타입스크립트에서의 코드 재사용 전략
+![reusable_code_in_ts](../img/reusable_code_strategy_ts.png)
