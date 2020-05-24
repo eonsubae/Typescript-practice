@@ -49,3 +49,43 @@ printVehicle(oldCivic);
 ```
 
 - 인터페이스를 사용하면 코드의 길이도 짧아지고 인자로 넘어온 객체의 프로퍼티명이 다를 때에도 타입스크립트가 에러를 발생시켜 실수를 줄이는데 도움이 된다
+
+인터페이스의 타입
+
+- 위에서 정의한 Vehicle처럼 string, number, boolean과 같은 기본 타입 외에도 다양한 타입을 사용할 수 있다
+
+```ts
+interface Vehicle {
+  name: string;
+  year: Date;
+  broken: boolean;
+}
+```
+
+- number형이던 year를 Date와 같은 객체로 변경할 수도 있다
+
+```ts
+interface Vehicle {
+  name: string;
+  year: number; // Date
+  broken: boolean;
+  summary(): string;
+}
+
+const oldCivic = {
+  name: 'civic',
+  year: 2000,
+  broken: true,
+  summary() {
+    return `Name: ${this.name}`;
+  },
+};
+
+const printVehicle = (vehicle: Vehicle): void => {
+  vehicle.summary();
+};
+
+printVehicle(oldCivic);
+```
+
+- 인터페이스 내부에 함수를 정의해서 Vehicle 인터페이스를 사용한 객체가 해당 함수를 구현하도록 강제하게 만들 수도 있다
