@@ -141,3 +141,29 @@ console.log(vehicle.color);
 ```
 
 - constructor의 인자에 public 접근제한자를 추가해주면 앞선 코드와 동일한 기능을 한다
+
+자식 클래스에서의 필드 선언방법
+
+```ts
+class Car extends Vehicle {
+  constructor(public wheel: number, color: string) {
+    super(color);
+  }
+
+  private drive(): void {
+    console.log('vroom');
+  }
+
+  startDrivingProcess(): void {
+    this.drive();
+    this.honk();
+  }
+}
+
+const car = new Car(4, 'red');
+car.startDrivingProcess();
+```
+
+- 자식클래스 자신만의 필드는 동일하게 public 필드명 형식으로 선언할 수 있다
+- 그런데 Vehicle에서 상속받은 필드인 color에 대해서는 public을 사용하면 Car 자신만의 필드로 재선언되므로 이런 상황을 굳이 의도한 것이 아니라면 public 키워드를 사용해서는 안된다
+- 또한 super()를 반드시 호출해야 한다
