@@ -82,10 +82,46 @@ const oldCivic = {
 };
 
 const printVehicle = (vehicle: Vehicle): void => {
-  vehicle.summary();
+  console.log(vehicle.summary());
 };
 
 printVehicle(oldCivic);
 ```
 
 - 인터페이스 내부에 함수를 정의해서 Vehicle 인터페이스를 사용한 객체가 해당 함수를 구현하도록 강제하게 만들 수도 있다
+
+성질이 다른 여러 객체에 적용가능한 인터페이스 작성하기
+
+```ts
+interface Reportable {
+  summary(): string;
+}
+
+const oldCivic = {
+  name: 'civic',
+  year: 2000,
+  broken: true,
+  summary() {
+    return `Name: ${this.name}`;
+  },
+};
+
+const drink = {
+  color: 'brown',
+  carbonated: true,
+  sugar: 40,
+  summary(): string {
+    return `My drink has ${this.sugar} grams of sugar`;
+  },
+};
+
+const printSummary = (item: Reportable): void => {
+  console.log(item.summary());
+};
+
+printSummary(oldCivic);
+printSummary(drink);
+```
+
+- Reportable은 특정 객체의 요약 문자열을 반환하는 함수다
+- 그 객체가 vehicle이든 drink이든 summary라는 함수만 정의에 맞게 구현하고 있다면 재활용할 수 있다
