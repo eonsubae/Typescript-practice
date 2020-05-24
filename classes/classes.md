@@ -87,3 +87,57 @@ vehicle.honk(); // Error
 ```
 
 - 하지만 protected역시 private과 마찬가지로 클래스 외부에서는 접근이 불가능하므로 위 코드는 에러가 발생한다
+
+---
+
+필드의 선언방법1
+
+```ts
+class Vehicle {
+  color: string = 'red';
+
+  protected honk(): void {
+    console.log('beep');
+  }
+}
+```
+
+- 필드명: 타입 형식으로 선언한다
+- 선언과 동시에 특정 값을 초기값으로 지정할 수 있다(여기서는 red)
+
+필드의 선언방법2
+
+```ts
+class Vehicle {
+  color: string;
+
+  constructor(color: string) {
+    this.color = color;
+  }
+
+  protected honk(): void {
+    console.log('beep');
+  }
+}
+
+const vehicle = new Vehicle('orange');
+console.log(vehicle.color);
+```
+
+- 위 코드처럼 constructor로 인스턴스를 생성할 때 필드 값들을 받도록 만들 수 있다
+- 그런데 TS에는 위와 동일한 기능을 하는 보다 간단한 방법이 있다
+
+```ts
+class Vehicle {
+  constructor(public color: string) {}
+
+  protected honk(): void {
+    console.log('beep');
+  }
+}
+
+const vehicle = new Vehicle('orange');
+console.log(vehicle.color);
+```
+
+- constructor의 인자에 public 접근제한자를 추가해주면 앞선 코드와 동일한 기능을 한다
