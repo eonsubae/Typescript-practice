@@ -125,3 +125,81 @@ class User {
 ```
 
 - 위와 같이 변환해주는 로직을 추가하면 에러가 사라질 것이다
+
+---
+
+앞서 만든 User 클래스를 다른 파일에서도 사용하기
+
+- User.ts에서 만들었던 User클래스는 현재 상태로는 User.ts파일 안에서만 사용할 수 있다
+- 소스 관리를 용이하게 하기 위해서는 다른 파일에 있는 객체도 불러와서 사용할 수 있는 편이 좋다
+
+```ts
+export class User {
+  // (...)
+}
+```
+
+- export 키워드를 class나 함수 변수 앞에 붙이면 해당 요소를 외부에서 접근할 수 있게 된다
+
+index.ts 파일에서 불러오기
+
+```ts
+import { User } from './User';
+// (...)
+```
+
+- 임포트시 다른 언어들과 차별화되는 점은 curly braces일 것이다
+- 이는 앞서 User.ts처럼 export 키워드만 가지고 특정 요소들을 노출시킬 때 한 파일에서 여러 요소들을 노출시킬 수 있기 때문이다
+
+```ts
+/* User.ts */
+export const red = 'red';
+export class User {
+  // (...)
+}
+
+/* index.ts */
+import { User, red } from './User';
+```
+
+그런데 react같은 라이브러리를 쓰다 보면 컬리브레이스 없이 임포트가 가능한 객체들이 있었을 것이다
+
+- 이는 default 키워드를 붙여 주는 것으로 가능하다
+
+```ts
+/* User.ts */
+export default 'red';
+
+/* index.ts */
+import red from './User';
+```
+
+- 이제 User.ts 파일에서 컬리 브레이스를 붙이지 않고 임포트하면 default 키워드가 붙은 대상을 불러오게 된다
+
+```ts
+/* index.ts */
+import defaultColor from './User';
+```
+
+- 따라서 이름을 User.ts파일에서 선언한 것과 동일하게 굳이 red로 한정할 필요가 없다
+
+컬리 브레이스
+
+- 앞서 설명한 이런 방식은 언제 컬리 브레이스를 사용하고 언제 하지 말아야 할지 매우 혼동을 가져오므로 TS의 기본적인 컨벤션은 default키워드를 사용하지 않는 것이다
+
+```ts
+/* index.ts */
+import { User } from './User';
+
+const user = new User();
+
+console.log(user);
+```
+
+- 제대로 불러오고 있는지 테스트 하기 위해 위 코드를 작성하고 parcel bundler를 실행해보자
+
+```terminal
+$ parcel index.html
+```
+
+![export_ts](../img/export_statements_ts.png)
