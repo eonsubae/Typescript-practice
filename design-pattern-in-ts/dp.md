@@ -203,3 +203,45 @@ $ parcel index.html
 ```
 
 ![export_ts](../img/export_statements_ts.png)
+
+---
+
+한번 더 연습을 위해 faker 라이브러리를 이용해 Company 클래스 만들어보기
+
+```ts
+/* User.ts */
+import faker from 'faker';
+
+export class Company {
+  companyName: string;
+  catchPhrase: string;
+  location: {
+    lat: number;
+    lng: number;
+  };
+
+  constructor() {
+    this.companyName = faker.company.companyName();
+    this.catchPhrase = faker.company.catchPhrase();
+    this.location = {
+      lat: parseFloat(faker.address.latitude()),
+      lng: parseFloat(faker.address.longitude())
+    }
+}
+```
+
+index.ts에서 Company 클래스의 인스턴스를 만들어 로그 확인해보기
+
+```ts
+/* index.ts */
+import { User } from './User';
+import { Company } from './Company';
+
+const user = new User();
+
+console.log(user);
+
+const company = new Company();
+
+console.log(company);
+```
