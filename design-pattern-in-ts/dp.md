@@ -245,3 +245,18 @@ const company = new Company();
 
 console.log(company);
 ```
+
+구글 맵스 API Key 받기
+
+- 사이트에 직접 접속해서 신용카드를 등록하는 등 여러 과정을 거쳐 API Key를 받을 수 있다
+- 해당 강의는 Section9 - 58. Adding Google Maps Support 참조
+- 이 과정을 거치기 싫다면 index.html 파일에 다음의 미리 생성된 API Key를 사용해도 된다
+
+```html
+<html>
+  <body>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBNLrJhOMz6idD05pzfn5lhA-TAw-mAZCU"></script>
+    <script src="src/index.ts"></script>
+  </body>
+</html>
+```
