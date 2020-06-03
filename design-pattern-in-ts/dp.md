@@ -260,3 +260,10 @@ console.log(company);
   </body>
 </html>
 ```
+* 위에서 추가한 태그로 브라우저에서 google을 콘솔에 입력해보면 google maps에 접근할 수 있는 것을 확인할 수 있을 것이다
+* 그런데 동시에 로컬의 타입스크립트 파일에서는 google을 인식하지 못하기 때문에 에러가 발생하는 것도 확인할 수 있을 것이다
+* 이 문제를 해결하려면 faker 때와 마찬가지로 구글맵을 위한 @types파일을 받아야 한다
+
+```terminal
+$ npm i @types/googlemaps
+```
