@@ -1,13 +1,22 @@
 // import { User, red } from './User';
 // import red from './User';
 // import defaultColor from './User';
-import { User } from './User';
-import { Company } from './Company';
+// import { User } from './User';
+// import { Company } from './Company';
+import { google } from 'googlemaps';
 
-const user = new User();
+// const user = new User();
 
-console.log(user);
+// console.log(user);
 
-const company = new Company();
+// const company = new Company();
 
-console.log(company);
+// console.log(company);
+
+new google.maps.Map(document.getElementById('map'), {
+  zoom: 1,
+  center: {
+    lat: 0,
+    lng: 0,
+  },
+});
