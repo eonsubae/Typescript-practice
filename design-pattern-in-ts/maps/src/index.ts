@@ -12,6 +12,10 @@
 
 // console.log(company);
 
+import { User } from './User';
 import { CustomMap } from './CustomMap';
 
-new CustomMap('map');
+const user = new User();
+const customMap = new CustomMap('map');
+
+customMap.addUserMarker(user);
