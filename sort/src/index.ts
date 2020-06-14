@@ -9,3 +9,5 @@ import { CharactersCollection } from './CharactersCollection';
 
 const charactersCollection = new CharactersCollection('Xaayb');
 const sorter = new Sorter(charactersCollection);
+sorter.sort();
+console.log(charactersCollection.data);
