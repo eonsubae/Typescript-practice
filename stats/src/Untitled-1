@@ -1,5 +1,9 @@
-class HoldAnything<TypeOfData> {
-  data: TypeOfData;
+class HoldAnything<T> {
+  data: T;
+
+  add(a: T): T {
+    return a;
+  }
 }
 
 const holdNumber = new HoldAnything<number>();
