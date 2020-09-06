@@ -92,3 +92,44 @@ ReactDOM.render(<App color="red" />, document.querySelector("#root"));
   - 그렇지 않고 props를 넘겨주지 않으면 에러가 발생한다
 
 ---
+
+## State Handling
+
+버튼을 클릭해 counter state를 증가 또는 감소시키는 간단한 코드를 작성했다
+```tsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+interface AppProps {
+    color?: string;
+}
+
+class App extends React.Component<AppProps> {
+  state = {
+    counter: 0
+  };
+
+  onIncrement = (): void => {
+    this.setState({ counter : this.state.counter + 1 });
+  }
+
+  onDecrement = (): void => {
+    this.setState({ counter : this.state.counter - 1 });
+  }
+
+  render() {
+    return (
+      <div>
+        <button onClick={this.onIncrement}>Increment</button>
+        <button onClick={this.onDecrement}>Decrement</button>
+        {this.state.counter}
+      </div>
+    )
+  }
+}
+
+ReactDOM.render(<App />, document.querySelector("#root"));
+```
+* 얼핏 보기엔 아무런 문제도 없는 매우 명확하고 간단한 코드이지만 내부적으로는 상당히 복잡한 문제들이 있다
+
+---
