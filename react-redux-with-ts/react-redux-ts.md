@@ -134,6 +134,8 @@ ReactDOM.render(<App />, document.querySelector("#root"));
 
 ---
 
+## Confusing Component State
+
 state선언 문법
 ```js
 class App extends React.Component<AppProps> {
@@ -205,3 +207,42 @@ ReactDOM.render(<App />, document.querySelector("#root"));
 ```
 * React.Component에 제네릭을 사용해 두 번째 인자로 스테이트의 타입을 정의할 수 있다
 * 그럼 생성자를 사용하더라도 멤버변수의 타입이 재정의된다
+
+---
+
+## Functional Components with TS
+
+클래스 기반 컴포넌트와 같은 기능을 하는 코드를 함수형 컴포넌트로 만들어 보기
+```tsx
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
+
+interface AppProps {
+  color?: string;
+}
+
+const App = (props: AppProps): JSX.Element => {
+  const [counter, setCounter]: [number, Function] = useState(0);
+
+  const onIncrement = (): void => {
+    setCounter(counter + 1);
+  }
+
+  const onDecrement = (): void => {
+    setCounter(counter - 1);
+  }
+
+  return (
+    <div>
+      <button onClick={onIncrement}>Increment</button>
+      <button onClick={onDecrement}>Decrement</button>
+      {counter}
+      <br />
+      {props.color}
+    </div>
+  );
+}
+
+ReactDOM.render(<App color="red" />, document.querySelector("#root"));
+```
+* 다른 내용들은 큰 차이가 없으나 반환 타입을 JSX.Element로 설정하는 것을 알아두자

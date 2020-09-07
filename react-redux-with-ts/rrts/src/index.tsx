@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 
 interface AppProps {
@@ -9,6 +9,29 @@ interface AppState {
   counter: number;
 }
 
+const App = (props: AppProps): JSX.Element => {
+  const [counter, setCounter]: [number, Function] = useState(0);
+
+  const onIncrement = (): void => {
+    setCounter(counter + 1);
+  }
+
+  const onDecrement = (): void => {
+    setCounter(counter - 1);
+  }
+
+  return (
+    <div>
+      <button onClick={onIncrement}>Increment</button>
+      <button onClick={onDecrement}>Decrement</button>
+      {counter}
+      <br />
+      {props.color}
+    </div>
+  );
+}
+
+/*
 class App extends React.Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
@@ -36,5 +59,6 @@ class App extends React.Component<AppProps, AppState> {
     )
   }
 }
+*/
 
-ReactDOM.render(<App />, document.querySelector("#root"));
+ReactDOM.render(<App color="red" />, document.querySelector("#root"));
