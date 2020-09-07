@@ -133,3 +133,75 @@ ReactDOM.render(<App />, document.querySelector("#root"));
 * 얼핏 보기엔 아무런 문제도 없는 매우 명확하고 간단한 코드이지만 내부적으로는 상당히 복잡한 문제들이 있다
 
 ---
+
+state선언 문법
+```js
+class App extends React.Component<AppProps> {
+  constructor(props: AppProps) {
+    super(props);
+
+    this.state = {
+      counter: 0
+    };
+  }
+
+  /* (...) */
+}
+```
+* 일반적인 자바스크립트 클래스 문법이라면 위와 같이 생성자 안에서 멤버변수를 선언한다
+* 위 코드는 앞서 보았던 코드와 정확히 같은 동작을 하는 코드다
+* 그런데 실제로 위와 같이 코드를 고쳐보면 에러가 발생하고 있는 것을 확인할 수 있을 것이다
+* 이는 타입스크립트에서 두 가지 멤버변수 선언방식이 다르게 동작하기 때문이다
+
+![cba-error](../img/cba-error.png)
+* 마우스를 에러가 발생한 곳에 올려놓으면 Property 'counter' does not exist on type 'Readonly<{}>'.ts(2339)라는 에러가 나올 것이다
+* 이는 리액트 컴포넌트 스테이트의 초기값이 아무런 타입이 없는 빈 값이기 때문에 발생하는 에러다
+* 앞서 선언했던 방식과 생성자를 선언하는 방식의 차이점이 여기서 드러난다
+* 앞서 선언했던 방식은 읽기전용으로 동작하지 않고 스테이트를 재정의한다
+* 재정의에 의해 기존 리액트 컴포넌트 스테이트의 타입을 사용하지 않고 재정의한 타입으로 변경되어 에러가 발생하지 않았던 것이다
+
+생성자를 이용한 방식을 사용하면서 에러 없애기
+```tsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+interface AppProps {
+  color?: string;
+}
+
+interface AppState {
+  counter: number;
+}
+
+class App extends React.Component<AppProps, AppState> {
+  constructor(props: AppProps) {
+    super(props);
+
+    this.state = {
+      counter: 0
+    };
+  }
+
+  onIncrement = (): void => {
+    this.setState({ counter : this.state.counter + 1 });
+  }
+
+  onDecrement = (): void => {
+    this.setState({ counter : this.state.counter - 1 });
+  }
+
+  render() {
+    return (
+      <div>
+        <button onClick={this.onIncrement}>Increment</button>
+        <button onClick={this.onDecrement}>Decrement</button>
+        {this.state.counter}
+      </div>
+    )
+  }
+}
+
+ReactDOM.render(<App />, document.querySelector("#root"));
+```
+* React.Component에 제네릭을 사용해 두 번째 인자로 스테이트의 타입을 정의할 수 있다
+* 그럼 생성자를 사용하더라도 멤버변수의 타입이 재정의된다
