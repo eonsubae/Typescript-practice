@@ -331,3 +331,61 @@ ReactDOM.render(
 * 이제 모든 에러가 사라진 것을 확인할 수 있을 것이다
 
 ---
+
+## Action Creators with Typescript
+
+더미 데이터를 받아오기 위해 액션 크리에이터 작성하기
+* src/actions폴더를 생성하고 생성된 폴더 내부에 index.ts파일을 생성한다
+```ts
+import axios from 'axios';
+
+export const fetchTodos = () => {
+  return (dispatch) => {
+    
+  }
+};
+```
+* 위와 같은 코드가 redux thunk의 기본 형식이다
+  - 액션 내부에서 한 번 더 함수를 리턴하는데 인자로 오는 dispatch함수로 작업을 처리하는 흐름이다
+* 그런데 위와 같은 코드를 작성하면 dispatch에 에러가 발생하고 있는 것을 확인할 수 있을 것이다
+
+![thunk-dispatch-error](../img/thunk-dispatch-error.png)
+
+redux의 Dispatch타입을 임포트해 에러 해결하기
+```ts
+import axios from 'axios';
+import { Dispatch } from 'redux';
+
+export const fetchTodos = () => {
+  return (dispatch: Dispatch) => {
+    
+  }
+};
+```
+* 에러가 사라진 것을 확인할 수 있을 것이다
+
+todo list목록을 받아오는 코드 작성하기
+```ts
+import axios from 'axios';
+import { Dispatch } from 'redux';
+
+const url = "https://jsonplaceholder.typicode.com/todos";
+
+export const fetchTodos = () => {
+  return async (dispatch: Dispatch) => {
+    const response = await axios.get(url);
+
+    dispatch({
+      type: 'FETCH_TODOS',
+      payload: response.data
+    })
+  }
+};
+```
+* 동작 자체는 올바르게 작동하는 코드다
+* 그런데 위 코드의 response부분처럼 어떤 타입의 데이터를 받아오는지 알 수 없는 부분들이 남아있다
+* 게다가 dispatch 내부의 type은 하드코딩된 문자열로 되어 있다
+  - 이는 enum으로 처리하는 것이 바람직하다
+
+---
+
