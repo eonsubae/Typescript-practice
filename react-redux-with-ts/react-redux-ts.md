@@ -452,3 +452,43 @@ export const fetchTodos = () => {
 ```
 
 ---
+
+## The Generic Dispatch Function
+
+디스패치의 인자의 인터페이스 작성하기(Option)
+* 필수는 아니지만 추가하면 에러를 방지하기 좋은 옵션이다
+
+```ts
+import axios from 'axios';
+import { Dispatch } from 'redux';
+
+import { ActionTypes } from './types';
+
+const url = "https://jsonplaceholder.typicode.com/todos";
+
+interface Todo {
+  id: number;
+  title: string;
+  completed: boolean;
+}
+
+interface FetchTodosAction {
+  type: ActionTypes.fetchTodos;
+  payload: Todo[];
+}
+
+export const fetchTodos = () => {
+  return async (dispatch: Dispatch) => {
+    const response = await axios.get<Todo[]>(url);
+
+    dispatch<FetchTodosAction>({
+      type: ActionTypes.fetchTodos,
+      payload: response.data
+    })
+  }
+};
+```
+* FetchTodosAction 인터페이스를 만들어 dispatch에 제네릭을 지정해줬다
+* 위와 같은 간단한 코드에서는 이런 방식이 큰 이점이 없다고 느끼기 쉽다
+* 그러나 await와 if와 같은 제어문이 난무하는 복잡한 코드를 작성해야 하는 경우에는 dispatch의 인자로 넘기는 오브젝트가 최종적으로 어떤 종류의 데이터인지 헷갈리는 경우가 많다
+* 위와 같이 인터페이스를 생성해서 적용해주면 복잡한 로직이 필요한 경우에 실수를 많이 줄여줄 수 있다
