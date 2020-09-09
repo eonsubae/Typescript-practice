@@ -246,3 +246,88 @@ const App = (props: AppProps): JSX.Element => {
 ReactDOM.render(<App color="red" />, document.querySelector("#root"));
 ```
 * 다른 내용들은 큰 차이가 없으나 반환 타입을 JSX.Element로 설정하는 것을 알아두자
+
+---
+
+# Setup Redux 
+
+다음 패키지들을 설치해준다
+```terminal
+$ npm i redux react-reudx axios redux-thunk
+```
+
+index.tsx파일을 수정하기
+```tsx
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+
+const store = createStore(reducers, applyMiddleware(thunk));
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+, document.querySelector("#root"));
+```
+* createStore는 앱 전체에서 사용할 스토어를 생성한다
+* applyMiddleware의 인자로 thunk를 보내 액션 크리에이터 내부에서 비동기 작업을 처리할 수 있도록 만든다
+* Provider로 생성한 리덕스 스토어 및 적용된 미들웨어로 애플리케이션 전체를 래핑한다
+
+타입 데피니션 파일
+![type-definition-file-error](../img/react-redux-type-definition-file-error.png)
+* 임포트 부분을 보면 redux와 redux-thunk패키지는 타입 정의 파일을 제공해주고 있어 에러가 발생하지 않는다
+* 그러나 react-redux처럼 타입 정의 파일을 기본으로 포함시키지 않고 있는 패키지는 따로 파일을 받거나 직접 생성해주어야 한다
+
+Installing type definition file of react-redux
+```terminal
+$ npm install @types/react-redux
+```
+* 설치가 완료되면 더 이상 임포트 부분에 에러가 발생하지 않는 것을 확인할 수 있을 것이다
+
+App컴포넌트 작성하기
+* src/components폴더를 생성하고 폴더 내부에 App.tsx파일을 생성한다
+```tsx
+import React from 'react';
+
+export class App extends React.Component {
+  render() {
+    return <div>Hi there!</div>
+  }
+}
+```
+
+Reducer생성하기
+* src/reducers폴더를 생성하고 폴더 내부에 index.ts파일을 생성한다
+```tsx
+import { combineReducers } from 'redux';
+
+export const reducers = combineReducers({
+  counter: () => 1
+});
+```
+
+index.tsx파일에서 생성한 App컴포넌트와 Reducer불러오기
+```tsx
+import React, { useState } from 'react';
+import ReactDOM from 'react-dom';
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+
+import { App } from './components/App';
+import { reducers } from './reducers/index';
+
+const store = createStore(reducers, applyMiddleware(thunk));
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+, document.querySelector("#root"));
+```
+* 이제 모든 에러가 사라진 것을 확인할 수 있을 것이다
+
+---
