@@ -389,3 +389,66 @@ export const fetchTodos = () => {
 
 ---
 
+## Actions Types Enum
+
+우선 axios로 받아오는 데이터의 타입을 지정해주기 위해 interface를 작성한다
+```ts
+import axios from 'axios';
+import { Dispatch } from 'redux';
+
+const url = "https://jsonplaceholder.typicode.com/todos";
+
+interface Todo {
+  id: number;
+  title: string;
+  completed: boolean;
+}
+
+export const fetchTodos = () => {
+  return async (dispatch: Dispatch) => {
+    const response = await axios.get<Todo[]>(url);
+
+    dispatch({
+      type: 'FETCH_TODOS',
+      payload: response.data
+    })
+  }
+};
+```
+* 작성된 인터페이스로 axios메소드에 제네릭을 지정해준다
+
+enum을 사용해 하드코딩된 디스패치 타입 수정하기
+* src/actions 폴더 안에 types.ts파일을 생성하고 다음과 같은 코드를 추가한다
+```ts
+export enum ActionTypes {
+  fetchTodos
+}
+```
+* src/actions/index.ts 파일에 하드코딩되어 있던 문자열을 교체한다
+```ts
+import axios from 'axios';
+import { Dispatch } from 'redux';
+
+import { ActionTypes } from './types';
+
+const url = "https://jsonplaceholder.typicode.com/todos";
+
+interface Todo {
+  id: number;
+  title: string;
+  completed: boolean;
+}
+
+export const fetchTodos = () => {
+  return async (dispatch: Dispatch) => {
+    const response = await axios.get<Todo[]>(url);
+
+    dispatch({
+      type: ActionTypes.fetchTodos,
+      payload: response.data
+    })
+  }
+};
+```
+
+---
