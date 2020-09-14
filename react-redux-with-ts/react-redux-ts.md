@@ -492,3 +492,33 @@ export const fetchTodos = () => {
 * 위와 같은 간단한 코드에서는 이런 방식이 큰 이점이 없다고 느끼기 쉽다
 * 그러나 await와 if와 같은 제어문이 난무하는 복잡한 코드를 작성해야 하는 경우에는 dispatch의 인자로 넘기는 오브젝트가 최종적으로 어떤 종류의 데이터인지 헷갈리는 경우가 많다
 * 위와 같이 인터페이스를 생성해서 적용해주면 복잡한 로직이 필요한 경우에 실수를 많이 줄여줄 수 있다
+
+---
+
+## A Reducer with Enums
+
+액션을 처리할 리듀서 작성하기
+* src/reducers 폴더에 todos.ts파일을 만들고 다음 내용을 입력한다
+```ts
+import { Todo, FetchTodosAction } from '../actions/index';
+import { ActionTypes } from '../actions/types';
+
+export const todosReducer = (
+  state: Todo[] = [], 
+  action: FetchTodosAction
+) => {
+  switch (action.type) {
+    case ActionTypes.fetchTodos:
+      return action.payload;
+    default:
+      return state;  
+  }  
+};
+```
+* 리듀서는 state, action 두 개의 인자를 받는다
+* state가 넘어오지 않는 경우 인자의 기본값으로 지정한 빈 배열이 state값이 된다
+* 앞서 작성했던 액션타입과 state의 인터페이스(여기서는 Todo)를 사용하고 있다
+* 이렇게 명확하게 정의한 타입들을 사용하면 쉽게 자동완성이 되도록 IDE나 텍스트 에디터의 도움을 받을 수 있다
+* 또, 어떤 형태의 state, action이 사용되는 리듀서인지 코드의 예측 가능성도 높아진다
+
+---
