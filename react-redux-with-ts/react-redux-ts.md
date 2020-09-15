@@ -522,3 +522,33 @@ export const todosReducer = (
 * 또, 어떤 형태의 state, action이 사용되는 리듀서인지 코드의 예측 가능성도 높아진다
 
 ---
+
+## Validating Store Structure
+
+앞서 생성한 리듀서를 적용하기
+* src/reducers/index.ts파일에 combineReducers에 앞서 만든 리듀서를 적용해준다
+```ts
+import { combineReducers } from 'redux';
+import { todosReducer } from './todos';
+
+export const reducers = combineReducers({
+  todos: todosReducer
+});
+```
+
+액션과 마찬가지로 combineReducers에도 제네릭을 적용하기
+```ts
+import { combineReducers } from 'redux';
+import { todosReducer } from './todos';
+import { Todo } from '../actions';
+
+export interface StoreState {
+  todos: Todo[]
+};
+
+export const reducers = combineReducers<StoreState>({
+  todos: todosReducer
+});
+```
+* 위와 같이 제네릭을 적용하면 실제로 todosReducers가 Todo[]타입이 아닌 다른 값을 반환하고 있을 시 에러를 발생시켜 알려준다
+* 이처럼 combineReducers에도 제네릭을 사용해 실수를 줄일 수 있다
