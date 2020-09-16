@@ -552,3 +552,36 @@ export const reducers = combineReducers<StoreState>({
 ```
 * 위와 같이 제네릭을 적용하면 실제로 todosReducers가 Todo[]타입이 아닌 다른 값을 반환하고 있을 시 에러를 발생시켜 알려준다
 * 이처럼 combineReducers에도 제네릭을 사용해 실수를 줄일 수 있다
+
+---
+
+## Connecting a Component to Redux
+
+지금까지 작성한 리덕스 코드들을 실제로 컴포넌트와 연결하기
+* src/components/App.tsx 파일을 다음과 같이 수정한다
+```tsx
+import React from 'react';
+import { connect } from 'react-redux';
+import { Todo, fetchTodos } from '../actions';
+import { StoreState } from '../reducers';
+
+interface AppProps {
+  todos: Todo[];
+  fetchTodos(): any;
+}
+
+class _App extends React.Component<AppProps> {
+  render() {
+    return <div>Hi there!</div>
+  }
+}
+
+const mapStateToProps = ({ todos }: StoreState): { todos: Todo[] } => {
+  return { todos };
+};
+
+export const App = connect(mapStateToProps, { fetchTodos })(_App);
+```
+* 기존 App컴포넌트는 connect에 의해 커링되므로 _App으로 이름을 바꿔 구분하기 쉽게 만든다
+* 제네릭을 활용해 컴포넌트가 사용할 state와 reducer를 지정한다
+* react-redux패키지의 connect함수로 이 모든 것들을 연결시켜준다
