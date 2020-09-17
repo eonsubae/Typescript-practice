@@ -585,3 +585,47 @@ export const App = connect(mapStateToProps, { fetchTodos })(_App);
 * 기존 App컴포넌트는 connect에 의해 커링되므로 _App으로 이름을 바꿔 구분하기 쉽게 만든다
 * 제네릭을 활용해 컴포넌트가 사용할 state와 reducer를 지정한다
 * react-redux패키지의 connect함수로 이 모든 것들을 연결시켜준다
+
+---
+
+## Rendering a List
+
+보조함수를 만들어 리덕스로 받아온 데이터를 렌더링하기
+```tsx
+import React from 'react';
+import { connect } from 'react-redux';
+import { Todo, fetchTodos } from '../actions';
+import { StoreState } from '../reducers';
+
+interface AppProps {
+  todos: Todo[];
+  fetchTodos(): any;
+}
+
+class _App extends React.Component<AppProps> {
+  onButtonClick = (): void => {
+    this.props.fetchTodos();    
+  }
+
+  renderList = (): JSX.Element[] => {
+    return this.props.todos.map((todo: Todo) => {
+      return <div key={todo.id}>{todo.title}</div>
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <button onClick={this.onButtonClick}>Fetch</button>
+        {this.renderList()}
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = ({ todos }: StoreState): { todos: Todo[] } => {
+  return { todos };
+};
+
+export const App = connect(mapStateToProps, { fetchTodos })(_App);
+```
