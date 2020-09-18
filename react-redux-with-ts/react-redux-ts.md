@@ -629,3 +629,43 @@ const mapStateToProps = ({ todos }: StoreState): { todos: Todo[] } => {
 
 export const App = connect(mapStateToProps, { fetchTodos })(_App);
 ```
+
+---
+
+## Adding in Delete Functionality
+
+Todo를 삭제하는 로직 작성하기
+1. 액션 타입 정의하기
+```ts
+// src/actions/types.ts
+
+export enum ActionTypes {
+  fetchTodos,
+  deleteTodo
+}
+```
+
+2. 인터페이스를 정의하기
+```ts
+// src/actions/index.ts
+
+export interface DeleteTodoAction {
+  type: ActionTypes.deleteTodo;
+  payload: number;
+}
+```
+* payload에 Todo전체를 넣을 필요는 없기 때문에 number를 지정했다
+
+3. 액션 크리에이터 작성하기
+```ts
+// src/actions/index.ts
+
+export const deleteTodo = (id: number): DeleteTodoAction => {
+  return {
+    type: ActionTypes.deleteTodo,
+    payload: id
+  };
+};
+```
+
+---
