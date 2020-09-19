@@ -669,3 +669,87 @@ export const deleteTodo = (id: number): DeleteTodoAction => {
 ```
 
 ---
+
+## Breaking Out Action Creators
+
+현재의 action과 관련된 파일 구조의 문제점
+* src/actions/index.ts파일에 모든 액션 크리에이터를 작성하고 있다
+* 현재는 todo와 관련된 파일밖에 없기 때문에 큰 문제가 없다
+* 그러나 현실의 애플리케이션에서는 다양한 도메인이 있고 모든 액션크리에이터를 index.ts파일 하나로 관린하는 것은 비효율적이다
+* 따라서 index.ts 파일은 여러 액션 크리에이터를 모아놓는 역할만 수행하고
+* 각 도메인과 관련된 액션 크리에이터는 다른 파일에 작성해서 코드를 관리하는 것이 좋다
+
+src/actions/todos.ts
+```ts
+import axios from 'axios';
+import { Dispatch } from 'redux';
+
+import { ActionTypes } from './types';
+
+const url = "https://jsonplaceholder.typicode.com/todos";
+
+export interface Todo {
+  id: number;
+  title: string;
+  completed: boolean;
+}
+
+export interface FetchTodosAction {
+  type: ActionTypes.fetchTodos;
+  payload: Todo[];
+}
+
+export interface DeleteTodoAction {
+  type: ActionTypes.deleteTodo;
+  payload: number;
+}
+
+export const fetchTodos = () => {
+  return async (dispatch: Dispatch) => {
+    const response = await axios.get<Todo[]>(url);
+
+    dispatch<FetchTodosAction>({
+      type: ActionTypes.fetchTodos,
+      payload: response.data
+    })
+  }
+};
+
+export const deleteTodo = (id: number): DeleteTodoAction => {
+  return {
+    type: ActionTypes.deleteTodo,
+    payload: id
+  };
+};
+```
+* 앞서 src/actions/index.ts에 작성했던 todo관련 로직들을 전부 todos.ts로 옮겼다
+
+src/actions/index.ts
+```ts
+export * from './todos';
+export * from './types';
+```
+* src/actions/index.ts 파일에서는 외부로 작성한 액션 파일들을 노출시키는 역할만 수행한다
+
+src/actions/index.ts로 임포트 경로를 변경하기
+```ts
+// src/reducers/todos.ts
+
+import { Todo, FetchTodosAction, ActionTypes } from '../actions/index';
+// import { ActionTypes } from '../actions/types';
+
+export const todosReducer = (
+  state: Todo[] = [], 
+  action: FetchTodosAction
+) => {
+  switch (action.type) {
+    case ActionTypes.fetchTodos:
+      return action.payload;
+    default:
+      return state;  
+  }  
+};
+```
+* 액션과 관련된 코드를 불러올 때는 actions/index.ts파일만을 참조하면 되므로 기억하기 편리해졌다
+
+---
