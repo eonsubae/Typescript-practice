@@ -753,3 +753,56 @@ export const todosReducer = (
 * 액션과 관련된 코드를 불러올 때는 actions/index.ts파일만을 참조하면 되므로 기억하기 편리해졌다
 
 ---
+
+## Expressing Actions as Type Union
+
+리듀서에 Todo의 삭제와 관련된 로직 작성하기
+```ts
+import { Todo, FetchTodosAction, DeleteTodoAction, ActionTypes } from '../actions/index';
+
+export const todosReducer = (
+  state: Todo[] = [], 
+  action: FetchTodosAction | DeleteTodoAction // ex) | EditTodoAction | CreateTodoAction
+) => {
+  switch (action.type) {
+    case ActionTypes.fetchTodos:
+      return action.payload;
+    default:
+      return state;  
+  }  
+};
+```
+* 위 코드처럼 | 액션명 형식으로 리듀서 액션의 타입을 추가하면 리듀서 쪽의 코드가 너무 방대해져서 관리하기가 힘들어진다
+* 액션 타입과 관련된 작업은 src/actions/types.ts에서 관리해주는 것이 좋다
+
+src/actions/types.ts
+```ts
+import { FetchTodosAction, DeleteTodoAction } from './todos';
+
+export enum ActionTypes {
+  fetchTodos,
+  deleteTodo
+}
+
+export type Action = FetchTodosAction | DeleteTodoAction;
+```
+
+src/reducers/todos.ts
+```ts
+import { Todo, Action, ActionTypes } from '../actions/index';
+
+export const todosReducer = (
+  state: Todo[] = [], 
+  action: Action
+) => {
+  switch (action.type) {
+    case ActionTypes.fetchTodos:
+      return action.payload;
+    default:
+      return state;  
+  }  
+};
+```
+* 개별적으로 불러오던 액션을 하나로 묶어 관리해서 코드가 매우 간결해졌다
+
+---
