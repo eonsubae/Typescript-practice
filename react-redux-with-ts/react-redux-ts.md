@@ -896,5 +896,52 @@ interface AppProps {
 }
 // (...)
 ```
-* 그다지 바람직한 방법은 아니지만 가장 쉬운 방법이다
-* Redux thunk를 사용하는 액션의 타입에는 Function을 지정해주자
+* 가장 최선은 타입스크립트가 Redux Thunk를 구분해서 인식해주는 것인데 아직 거기까지는 지원하지 않고 있다
+* 차선책으로 Redux thunk를 사용하는 액션의 타입에는 Function을 지정하면 해결할 수 있다
+
+---
+
+## Tracking Loading with Component State
+
+데이터를 불러오기 전까지 로딩 관련 컨텐츠를 표시하는 로직 추가하기
+```tsx
+// App.tsx
+// (...)
+
+interface AppState {
+  fetching: boolean;
+}
+
+class _App extends React.Component<AppProps, AppState> {
+  constructor(props: AppProps) {
+    super(props);
+
+    this.state = { fetching: false };
+  }
+
+  componentDidUpdate(prevProps: AppProps): void {
+    if (!prevProps.todos.length && this.props.todos.length) {
+      this.setState({ fetching : false });
+    }
+  }
+
+  onButtonClick = (): void => {
+    this.props.fetchTodos();
+    this.setState({ fetching : true });  
+  }
+  
+  // (...)
+
+  render() {
+    return (
+      <div>
+        <button onClick={this.onButtonClick}>Fetch</button>
+        {this.state.fetching ? 'LOADING' : null}
+        {this.renderList()}
+      </div>
+    );
+  }
+}
+
+// (...)
+```
