@@ -831,3 +831,70 @@ export const todosReducer = (
 
 ---
 
+## Again, Type Definition Files
+
+지금까지 작성한 deleteTodo관련 리덕스 코드를 컴포넌트와 연결하기
+```tsx
+import React from 'react';
+import { connect } from 'react-redux';
+import { Todo, fetchTodos, deleteTodo } from '../actions';
+import { StoreState } from '../reducers';
+
+interface AppProps {
+  todos: Todo[];
+  fetchTodos: typeof fetchTodos;
+  deleteTodo: typeof deleteTodo;
+}
+
+class _App extends React.Component<AppProps> {
+  onButtonClick = (): void => {
+    this.props.fetchTodos();    
+  }
+
+  onTodoClick = (id: number): void => {
+    this.props.deleteTodo(id);
+  }
+
+  renderList = (): JSX.Element[] => {
+    return this.props.todos.map((todo: Todo) => {
+      return (
+        <div onClick={() => this.onTodoClick(todo.id)} key={todo.id}>{todo.title}</div>
+      );
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <button onClick={this.onButtonClick}>Fetch</button>
+        {this.renderList()}
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = ({ todos }: StoreState): { todos: Todo[] } => {
+  return { todos };
+};
+
+export const App = connect(mapStateToProps, { fetchTodos, deleteTodo })(_App);
+```
+
+Redux thunk를 타입스크립트가 인식하지 못하는 문제
+![redux-thunk-connect-problem](../img/redux-thunk-connect-problem.png)
+* redux thunk는 일반적인 액션 크리에이터와 다르게 비동기 로직을 처리하기 위해 추가적인 작업을 수행한다
+* 타입스크립트는 일반적인 액션 크레에이터인 deleteTodo와 비동기 로직을 추가로 처리하므로 프로미스를 리턴하는 fetchTodos가 함께 mapDispatchToPropsParam오브젝트로 사용되는 것을 미스매칭이라 판단해 에러를 발생시킨다
+
+문제 해결하기
+```tsx
+// App.tsx
+// (...)
+interface AppProps {
+  todos: Todo[];
+  fetchTodos: Function;
+  deleteTodo: typeof deleteTodo;
+}
+// (...)
+```
+* 그다지 바람직한 방법은 아니지만 가장 쉬운 방법이다
+* Redux thunk를 사용하는 액션의 타입에는 Function을 지정해주자
