@@ -806,3 +806,28 @@ export const todosReducer = (
 * 개별적으로 불러오던 액션을 하나로 묶어 관리해서 코드가 매우 간결해졌다
 
 ---
+
+## Type Guards in Reducers
+
+deleteTodo 로직 완성하기
+```ts
+import { Todo, Action, ActionTypes } from '../actions/index';
+
+export const todosReducer = (
+  state: Todo[] = [], 
+  action: Action
+) => {
+  switch (action.type) {
+    case ActionTypes.fetchTodos:
+      return action.payload;
+    case ActionTypes.deleteTodo:
+      return state.filter((todo: Todo) => todo.id !== action.payload);
+    default:
+      return state;  
+  }  
+};
+```
+* payload로 넘어온 number타입의 값과 todo의 id를 비교해서 특정 Todo객체를 삭제하고 있다
+
+---
+
